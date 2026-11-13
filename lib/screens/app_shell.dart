@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'accueil_screen.dart';
+import 'acceuil_screen.dart';
 import 'ajouter_mot_screen.dart';
 import 'quiz_screen.dart';
 import 'stats_screen.dart';
@@ -26,7 +26,7 @@ class _AppShellState extends State<AppShell> {
     return Scaffold(
       body: IndexedStack(
         index: _ongletActif,
-        children: const [AccueilScreen(), QuizScreen(), StatsScreen()],
+        children: const [AcceuilScreen(), QuizScreen(), StatsScreen()],
       ),
       floatingActionButton: _ongletActif == 0
           ? FloatingActionButton(

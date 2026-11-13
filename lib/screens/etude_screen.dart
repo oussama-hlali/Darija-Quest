@@ -103,7 +103,7 @@ class _EtudeScreenState extends State<EtudeScreen> {
         Text(mot.exemple, style: const TextStyle(fontSize: 16)),
         const SizedBox(height: 4),
         Text(
-          mot.exempleFr,
+          mot.exemplefr,
           style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
         ),
         const SizedBox(height: 12),
