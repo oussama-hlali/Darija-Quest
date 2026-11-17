@@ -48,7 +48,17 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
+fonts:
+  - family: NotoSansArabic
+    fonts:
+      - asset: assets/fonts/noto_sans_arabic_400.ttf
+        weight: 400
+      - asset: assets/fonts/noto_sans_arabic_500.ttf
+        weight: 500
+      - asset: assets/fonts/noto_sans_arabic_600.ttf
+        weight: 600
+      - asset: assets/fonts/noto_sans_arabic_700.ttf
+        weight: 700
 # The following section is specific to Flutter packages.
 flutter:
 

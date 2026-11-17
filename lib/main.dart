@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'screens/app_shell.dart';
+import 'widgets/verre.dart';
 
-void main() => runApp(const DarijaQuestApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.transparent,
+    ),
+  );
+  runApp(const DarijaQuestApp());
+}
 
 class DarijaQuestApp extends StatelessWidget {
   const DarijaQuestApp({super.key});
@@ -14,7 +26,14 @@ class DarijaQuestApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1B6F8A)),
+        scaffoldBackgroundColor: Couleurs.fond,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Couleurs.primaire,
+          surface: Couleurs.fond,
+          primary: Couleurs.primaire,
+        ),
+        splashFactory: NoSplash.splashFactory,
+        highlightColor: Colors.transparent,
       ),
       home: const AppShell(),
     );
