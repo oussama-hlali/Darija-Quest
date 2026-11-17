@@ -1,3 +1,14 @@
+enum StatutMot { nouveau, connu, aRevoir }
+
+extension StatutMotX on StatutMot {
+  /// Étiquette affichée dans la liste des mots d'un thème.
+  String get etiquette => switch (this) {
+    StatutMot.nouveau => 'Nouveau',
+    StatutMot.connu => '✓ Connu',
+    StatutMot.aRevoir => '↺ À revoir',
+  };
+}
+
 class Mot {
   final int id;
   final String darija;
@@ -7,13 +18,18 @@ class Mot {
   final String exemple;
   final String exemplefr;
 
-  const Mot({
+  StatutMot statut;
+  bool favori;
+
+  Mot({
     required this.id,
     required this.darija,
-    required this.arabe,
+    this.arabe = '',
     required this.francais,
     required this.niveau,
-    required this.exemple,
-    required this.exemplefr,
+    this.exemple = '',
+    this.exemplefr = '',
+    this.statut = StatutMot.nouveau,
+    this.favori = false,
   });
 }
