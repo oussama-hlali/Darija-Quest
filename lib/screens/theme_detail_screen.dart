@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../models/theme_darija.dart';
 import '../models/theme_darija.dart';
+import '../widgets/verre.dart';
 import 'etude_screen.dart';
 import 'quiz_screen.dart';
 
@@ -14,36 +15,35 @@ class ThemeDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(theme.nom)),
-      body: ListView(
+    final c = Theme.of(context).colorScheme;
+    return PageVerre(
+      titre: theme.nom,
+      retour: true,
+      enfant: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Row(
-            children: [
-              Icon(
-                theme.icone,
-                size: 32,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                '${theme.mots.length} mots',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ],
+          Verre(
+            child: Row(
+              children: [
+                Icon(theme.icone, size: 32, color: c.primary),
+                const SizedBox(width: 12),
+                Text(
+                  '${theme.mots.length} mots',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           for (final Mot mot in theme.mots)
-            Card(
-              margin: const EdgeInsets.only(bottom: 8),
+            Verre(
               child: ListTile(
                 title: Text(mot.darija),
                 subtitle: Text('${mot.francais} · ${mot.niveau}'),
                 trailing: Text(mot.arabe, style: const TextStyle(fontSize: 18)),
               ),
             ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 12),
           FilledButton.icon(
             onPressed: () => Navigator.push(
               context,
