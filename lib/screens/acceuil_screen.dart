@@ -32,7 +32,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
               children: [
                 Icon(Icons.local_fire_department, color: c.primary),
                 const SizedBox(width: 8),
-                Text('S├®rie : 3 jours', style: TextStyle(color: c.onSurface)),
+                Text('Sèrie : 3 jours', style: TextStyle(color: c.onSurface)),
               ],
             ),
           ),
@@ -55,7 +55,7 @@ class _AccueilScreenState extends State<AccueilScreen> {
             controller: _recherche,
             onChanged: (_) => setState(() {}),
             decoration: InputDecoration(
-              hintText: 'Rechercher un th├¿me',
+              hintText: 'Rechercher un thème',
               prefixIcon: const Icon(Icons.search),
               filled: true,
               fillColor: c.onSurface.withValues(alpha: .06),
@@ -70,8 +70,8 @@ class _AccueilScreenState extends State<AccueilScreen> {
             spacing: 8,
             children: [
               Chip(label: Text('Tous')),
-              Chip(label: Text('D├®butant')),
-              Chip(label: Text('Interm├®diaire')),
+              Chip(label: Text('Dèbutant')),
+              Chip(label: Text('Intermèdiaire')),
             ],
           ),
           const SizedBox(height: 12),

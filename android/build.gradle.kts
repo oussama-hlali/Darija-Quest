@@ -1,5 +1,7 @@
 allprojects {
     repositories {
+        // Local copy of Flutter engine artifacts (storage.googleapis.com is unreachable here).
+        maven { url = uri("C:/Users/wael/.flutter_offline_maven/download.flutter.io") }
         google()
         mavenCentral()
     }

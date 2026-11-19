@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Formulaire « Ajouter un mot » (jalon J1 : champs affichés).
 ///

@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:material_ui/material_ui.dart';
 
-/// Fond du design Figma : trois blocs de couleur flout├®s derri├¿re le contenu.
+/// Fond du design Figma : trois blocs de couleur floutès derri├¿re le contenu.
 class PageVerre extends StatelessWidget {
   const PageVerre({
     super.key,
@@ -73,7 +73,7 @@ class PageVerre extends StatelessWidget {
 }
 
 /// Surface de verre : remplissage translucide, bord clair, ombre douce.
-/// Pas de flou d'arri├¿re-plan : ce sont les blobs qui sont flout├®s.
+/// Pas de flou d'arri├¿re-plan : ce sont les blobs qui sont floutès.
 class Verre extends StatelessWidget {
   const Verre({
     super.key,
@@ -104,7 +104,7 @@ class Verre extends StatelessWidget {
           ),
         ],
       ),
-      // Material transparent : n├®cessaire au ListTile pour ses effets d'ink.
+      // Material transparent : nècessaire au ListTile pour ses effets d'ink.
       child: Material(type: MaterialType.transparency, child: child),
     );
   }

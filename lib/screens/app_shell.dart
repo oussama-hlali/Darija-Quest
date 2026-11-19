@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
+import '../widgets/verre.dart';
 import 'acceuil_screen.dart';
 import 'ajouter_mot_screen.dart';
 import 'quiz_screen.dart';
@@ -21,12 +22,44 @@ class AppShell extends StatefulWidget {
 class _AppShellState extends State<AppShell> {
   int _ongletActif = 0;
 
+  Widget _onglet(IconData icone, String label, int index) {
+    final c = Theme.of(context).colorScheme;
+    final actif = _ongletActif == index;
+
+    return GestureDetector(
+      onTap: () => setState(() => _ongletActif = index),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: actif ? c.primary.withValues(alpha: .12) : Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icone, color: actif ? c.primary : c.onSurfaceVariant),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 11,
+                color: actif ? c.onSurface : c.onSurfaceVariant,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final c = Theme.of(context).colorScheme;
+
     return Scaffold(
       body: IndexedStack(
         index: _ongletActif,
-        children: const [AcceuilScreen(), QuizScreen(), StatsScreen()],
+        children: const [AccueilScreen(), QuizScreen(), StatsScreen()],
       ),
       floatingActionButton: _ongletActif == 0
           ? FloatingActionButton(
@@ -34,21 +67,26 @@ class _AppShellState extends State<AppShell> {
                 context,
                 MaterialPageRoute(builder: (_) => const AjouterMotScreen()),
               ),
+              backgroundColor: c.primary,
+              foregroundColor: c.onPrimary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
               child: const Icon(Icons.add),
             )
           : null,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _ongletActif,
-        onDestinationSelected: (valeur) =>
-            setState(() => _ongletActif = valeur),
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.menu_book), label: 'Accueil'),
-          NavigationDestination(icon: Icon(Icons.lightbulb), label: 'Quiz'),
-          NavigationDestination(
-            icon: Icon(Icons.bar_chart),
-            label: 'Statistiques',
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+        child: Verre(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _onglet(Icons.menu_book, 'Accueil', 0),
+              _onglet(Icons.lightbulb, 'Quiz', 1),
+              _onglet(Icons.bar_chart, 'Statistiques', 2),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
