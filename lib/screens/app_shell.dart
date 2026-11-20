@@ -6,12 +6,8 @@ import 'ajouter_mot_screen.dart';
 import 'quiz_screen.dart';
 import 'stats_screen.dart';
 
-/// Coquille de l'application : barre de navigation inférieure entre
-/// Accueil, Quiz et Statistiques.
-///
-/// Jalon J1 : seul un `setState` gère l'onglet actif — aucun état
-/// global (pas de Provider), conformément au brief.
-/// Le bouton « + » n'apparaît que sur l'onglet Accueil.
+/// Coquille de l'application : navigation en pastille de verre.
+/// Jalon J1 : un simple `setState` gère l'onglet actif.
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
 
