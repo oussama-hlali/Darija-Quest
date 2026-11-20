@@ -1,10 +1,9 @@
 import 'package:material_ui/material_ui.dart';
 
+import '../widgets/verre.dart';
+
 /// Formulaire « Ajouter un mot » (jalon J1 : champs affichés).
-///
-/// Aucune validation ni enregistrement ici (exigences du jalon J1) :
-/// le bouton affiche seulement un message de démo. La validation
-/// (EF3) et la sauvegarde viendront d'un jalon suivant.
+/// Aucune validation ni enregistrement : le bouton affiche un message de démo.
 class AjouterMotScreen extends StatefulWidget {
   const AjouterMotScreen({super.key});
 
@@ -42,70 +41,75 @@ class _AjouterMotScreenState extends State<AjouterMotScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Ajouter un mot')),
-      body: ListView(
+    return PageVerre(
+      titre: 'Ajouter un mot',
+      retour: true,
+      enfant: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          TextField(
-            controller: _darija,
-            decoration: const InputDecoration(
-              labelText: 'Mot en darija',
-              hintText: 'Ex. : Sa7bi',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(height: 12),
-          TextField(
-            controller: _arabe,
-            decoration: const InputDecoration(
-              labelText: 'Écriture arabe',
-              hintText: 'Ex. : صاحبي',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(height: 12),
-          TextField(
-            controller: _francais,
-            decoration: const InputDecoration(
-              labelText: 'Traduction en français',
-              hintText: 'Ex. : Mon ami',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(height: 12),
-          DropdownButtonFormField<String>(
-            initialValue: _niveau,
-            decoration: const InputDecoration(
-              labelText: 'Niveau',
-              border: OutlineInputBorder(),
-            ),
-            items: const [
-              DropdownMenuItem(value: 'Débutant', child: Text('Débutant')),
-              DropdownMenuItem(
-                value: 'Intermédiaire',
-                child: Text('Intermédiaire'),
+          Verre(
+            child: TextField(
+              controller: _darija,
+              decoration: const InputDecoration(
+                labelText: 'Mot en darija',
+                hintText: 'Ex. : Sa7bi',
               ),
-              DropdownMenuItem(value: 'Avancé', child: Text('Avancé')),
-            ],
-            onChanged: (valeur) => setState(() => _niveau = valeur!),
-          ),
-          const SizedBox(height: 12),
-          TextField(
-            controller: _exemple,
-            decoration: const InputDecoration(
-              labelText: 'Exemple en darija',
-              hintText: 'Ex. : Sa7bi, chnahwelek?',
-              border: OutlineInputBorder(),
             ),
           ),
           const SizedBox(height: 12),
-          TextField(
-            controller: _exempleFr,
-            decoration: const InputDecoration(
-              labelText: 'Exemple traduit',
-              hintText: 'Ex. : Mon ami, comment ça va ?',
-              border: OutlineInputBorder(),
+          Verre(
+            child: TextField(
+              controller: _arabe,
+              decoration: const InputDecoration(
+                labelText: 'Écriture arabe',
+                hintText: 'Ex. : صاحبي',
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Verre(
+            child: TextField(
+              controller: _francais,
+              decoration: const InputDecoration(
+                labelText: 'Traduction en français',
+                hintText: 'Ex. : Mon ami',
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Verre(
+            child: DropdownButtonFormField<String>(
+              initialValue: _niveau,
+              decoration: const InputDecoration(labelText: 'Niveau'),
+              items: const [
+                DropdownMenuItem(value: 'Débutant', child: Text('Débutant')),
+                DropdownMenuItem(
+                  value: 'Intermédiaire',
+                  child: Text('Intermédiaire'),
+                ),
+                DropdownMenuItem(value: 'Avancé', child: Text('Avancé')),
+              ],
+              onChanged: (valeur) => setState(() => _niveau = valeur!),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Verre(
+            child: TextField(
+              controller: _exemple,
+              decoration: const InputDecoration(
+                labelText: 'Exemple en darija',
+                hintText: 'Ex. : Sa7bi, chnahwelek?',
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Verre(
+            child: TextField(
+              controller: _exempleFr,
+              decoration: const InputDecoration(
+                labelText: 'Exemple traduit',
+                hintText: 'Ex. : Mon ami, comment ça va ?',
+              ),
             ),
           ),
           const SizedBox(height: 24),
