@@ -2,11 +2,10 @@ import 'package:material_ui/material_ui.dart';
 
 import '../models/mot.dart';
 import '../models/theme_darija.dart';
+import '../widgets/verre.dart';
 
-/// Étude d'un thème : cartes recto/verso.
-///
-/// Jalon J1 : un `setState` retourne la carte touchée —
-/// recto = darija + arabe, verso = traduction + exemples.
+/// Étude d'un thème : cartes recto/verso en verre.
+/// Toucher une carte retourne le mot (setState, jalon J1).
 class EtudeScreen extends StatefulWidget {
   const EtudeScreen({super.key, required this.theme});
 
@@ -31,12 +30,13 @@ class _EtudeScreenState extends State<EtudeScreen> {
   Widget build(BuildContext context) {
     final mots = widget.theme.mots;
 
-    return Scaffold(
-      appBar: AppBar(title: Text('Étude · ${widget.theme.nom}')),
-      body: Column(
+    return PageVerre(
+      titre: 'Étude · ${widget.theme.nom}',
+      retour: true,
+      enfant: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(16, 76, 16, 8),
             child: Text(
               '${_retournees.length} / ${mots.length} cartes vues',
               style: Theme.of(context).textTheme.titleMedium,
@@ -50,15 +50,17 @@ class _EtudeScreenState extends State<EtudeScreen> {
                 final mot = mots[i];
                 final visible = _retournees.contains(i);
 
-                return Card(
-                  margin: const EdgeInsets.only(bottom: 12),
+                return Verre(
+                  rayon: 36,
                   child: InkWell(
                     onTap: () => _retourner(i),
                     child: Padding(
                       padding: const EdgeInsets.all(20),
                       child: AnimatedSwitcher(
                         duration: const Duration(milliseconds: 200),
-                        child: visible ? _verso(context, mot) : _recto(mot),
+                        child: visible
+                            ? _verso(context, mot)
+                            : _recto(context, mot),
                       ),
                     ),
                   ),
@@ -72,7 +74,8 @@ class _EtudeScreenState extends State<EtudeScreen> {
   }
 
   /// Face de la carte : le mot en darija et en arabe.
-  Widget _recto(Mot mot) {
+  Widget _recto(BuildContext context, Mot mot) {
+    final c = Theme.of(context).colorScheme;
     return Column(
       key: const ValueKey('recto'),
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +86,7 @@ class _EtudeScreenState extends State<EtudeScreen> {
         const SizedBox(height: 12),
         Text(
           'Touchez la carte pour voir la traduction',
-          style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+          style: TextStyle(fontSize: 12, color: c.onSurfaceVariant),
         ),
       ],
     );
@@ -92,6 +95,7 @@ class _EtudeScreenState extends State<EtudeScreen> {
   /// Dos de la carte : traduction et exemples.
   Widget _verso(BuildContext context, Mot mot) {
     final theme = Theme.of(context);
+    final c = theme.colorScheme;
     return Column(
       key: const ValueKey('verso'),
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,12 +108,12 @@ class _EtudeScreenState extends State<EtudeScreen> {
         const SizedBox(height: 4),
         Text(
           mot.exemplefr,
-          style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+          style: TextStyle(fontSize: 14, color: c.onSurfaceVariant),
         ),
         const SizedBox(height: 12),
         Text(
           'Touchez la carte pour revenir au mot',
-          style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+          style: TextStyle(fontSize: 12, color: c.onSurfaceVariant),
         ),
       ],
     );
