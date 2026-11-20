@@ -1,19 +1,35 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:darija_quest/data/donnees_fictives.dart';
 import 'package:darija_quest/main.dart';
+import 'package:darija_quest/screens/theme_detail_screen.dart';
 
 void main() {
-  testWidgets('displays the home screen', (WidgetTester tester) async {
+  testWidgets('l accueil affiche les thèmes', (tester) async {
     await tester.pumpWidget(const DarijaQuestApp());
 
     expect(find.text('Darija Quest'), findsOneWidget);
-    expect(find.text('Salutations'), findsOneWidget);
+    for (final t in themes) {
+      expect(find.text(t.nom), findsWidgets);
+    }
+  });
+
+  testWidgets('toucher un thème ouvre le détail', (tester) async {
+    await tester.pumpWidget(const DarijaQuestApp());
+
+    await tester.tap(find.text(themes.first.nom).first);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ThemeDetailScreen), findsOneWidget);
+  });
+
+  testWidgets('le bouton + ouvre le formulaire', (tester) async {
+    await tester.pumpWidget(const DarijaQuestApp());
+
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Ajouter un mot'), findsOneWidget);
   });
 }
