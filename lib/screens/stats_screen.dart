@@ -1,10 +1,9 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../data/donnees_fictives.dart';
+import '../widgets/verre.dart';
 
-/// Statistiques (jalon J1) : chiffres calculés à partir des
-/// données fictives — nombre de thèmes, de mots, répartition
-/// par niveau et par thème.
+/// Statistiques (jalon J1) calculées depuis les données fictives.
 class StatsScreen extends StatelessWidget {
   const StatsScreen({super.key});
 
@@ -21,15 +20,15 @@ class StatsScreen extends StatelessWidget {
       }
     }
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Statistiques')),
-      body: ListView(
+    return PageVerre(
+      titre: 'Statistiques',
+      enfant: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           Row(
             children: [
               Expanded(
-                child: Card(
+                child: Verre(
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
@@ -46,7 +45,7 @@ class StatsScreen extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: Card(
+                child: Verre(
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
@@ -61,7 +60,9 @@ class StatsScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          Card(
+          Verre(
+            grand: true,
+            rayon: 28,
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -84,7 +85,9 @@ class StatsScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Card(
+          Verre(
+            grand: true,
+            rayon: 28,
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
