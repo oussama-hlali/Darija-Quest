@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import '../data/donnees_fictives.dart';
 import '../models/mot.dart';
 import '../models/theme_darija.dart';
+import '../widgets/verre.dart';
 
 /// Question de quiz : un mot, quatre traductions possibles.
 class _Question {
@@ -17,12 +18,7 @@ class _Question {
   final String bonneReponse;
 }
 
-/// Quiz de traduction (jalon J1).
-///
-/// - Ouvert depuis la barre inférieure : les mots de tous les thèmes
-///   sont utilisés.
-/// - Ouvert depuis le détail d'un thème : seuls les mots du thème
-///   (`QuizScreen(theme: t)`).
+/// Quiz de traduction (jalon J1), en cartes de verre.
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key, this.theme});
 
@@ -44,11 +40,9 @@ class _QuizScreenState extends State<QuizScreen> {
     _questions = _construireQuestions();
   }
 
-  /// Mots disponibles pour ce quiz.
   List<Mot> _pool() {
     if (widget.theme != null) return widget.theme!.mots;
 
-    // Sans thème précis : alterner un mot de chaque thème.
     final pool = <Mot>[];
     var longueurMax = 0;
     for (final t in themes) {
@@ -70,7 +64,6 @@ class _QuizScreenState extends State<QuizScreen> {
     for (var i = 0; i < selection.length; i++) {
       final bonne = selection[i].francais;
 
-      // Trois distracteurs pris dans le reste du pool.
       final distracteurs = <String>[];
       for (var j = 1; distracteurs.length < 3 && j < pool.length; j++) {
         final candidat = pool[(i + j) % pool.length].francais;
@@ -91,7 +84,7 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   void _repondre(String option) {
-    if (_choix != null) return; // une réponse par question
+    if (_choix != null) return;
     setState(() {
       _choix = option;
       if (option == _questions[_index].bonneReponse) _score++;
@@ -117,14 +110,10 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   Widget build(BuildContext context) {
     final termine = _index >= _questions.length;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.theme == null ? 'Quiz' : 'Quiz · ${widget.theme!.nom}',
-        ),
-      ),
-      body: termine ? _ecranResultat() : _ecranQuestion(),
+    return PageVerre(
+      titre: widget.theme == null ? 'Quiz' : 'Quiz · ${widget.theme!.nom}',
+      retour: true,
+      enfant: termine ? _ecranResultat() : _ecranQuestion(),
     );
   }
 
@@ -136,16 +125,17 @@ class _QuizScreenState extends State<QuizScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const SizedBox(height: 8),
               Text(
                 'Question ${_index + 1} / ${_questions.length}',
                 style: theme.textTheme.titleSmall,
               ),
               const SizedBox(height: 16),
-              Card(
+              Verre(
                 child: Padding(
                   padding: const EdgeInsets.all(24),
                   child: Column(
@@ -199,14 +189,15 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   Widget _boutonOption(String option, _Question question) {
+    final c = Theme.of(context).colorScheme;
     final selectionne = _choix == option;
     final estBonne = option == question.bonneReponse;
 
     Color? fond;
     if (_choix != null && estBonne) {
-      fond = Colors.green.shade100; // la bonne réponse apparaît en vert
+      fond = c.primaryContainer; // bonne réponse : teinte du thème
     } else if (selectionne && !estBonne) {
-      fond = Colors.red.shade100; // l'erreur de l'utilisateur en rouge
+      fond = c.errorContainer; // erreur : teinte du thème
     }
 
     return ElevatedButton(
