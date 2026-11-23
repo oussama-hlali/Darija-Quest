@@ -29,7 +29,7 @@ class ApiService {
   // Le plan gratuit Render s'endort : la 1re requête peut prendre ~30 s.
   static const Duration _delai = Duration(seconds: 60);
 
-  static Future<List<Object?>> getMots() async {
+  static Future<List<Mot>> getMots() async {
     final reponse = await http
         .get(Uri.parse('$baseUrl/api/mots'))
         .timeout(_delai);
