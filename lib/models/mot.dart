@@ -16,4 +16,6 @@ class Mot {
     required this.exemple,
     required this.exemplefr,
   });
+
+  static Object? fromJson(Map<String, dynamic> e) {}
 }
