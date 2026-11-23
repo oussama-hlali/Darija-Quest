@@ -6,6 +6,7 @@ class Mot {
   final String niveau;
   final String exemple;
   final String exemplefr;
+  final String theme;
 
   const Mot({
     required this.id,
@@ -15,7 +16,19 @@ class Mot {
     required this.niveau,
     required this.exemple,
     required this.exemplefr,
+    this.theme = 'Salutations',
   });
 
-  static Object? fromJson(Map<String, dynamic> e) {}
+  factory Mot.fromJson(Map<String, dynamic> json) {
+    return Mot(
+      id: (json['id'] as num?)?.toInt() ?? 0,
+      darija: json['darija'] ?? '',
+      arabe: json['arabe'] ?? '',
+      francais: json['francais'] ?? '',
+      niveau: json['niveau'] ?? 'Débutant',
+      exemple: json['exemple'] ?? '',
+      exemplefr: json['exemplefr'] ?? '',
+      theme: json['theme'] ?? 'Salutations',
+    );
+  }
 }
