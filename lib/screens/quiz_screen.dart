@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../data/donnees_fictives.dart';
 import '../models/mot.dart';
 import '../models/theme_darija.dart';
+import '../services/api_service.dart';
 
 /// Question de quiz : un mot, quatre traductions possibles.
 class _Question {
@@ -17,12 +17,7 @@ class _Question {
   final String bonneReponse;
 }
 
-/// Quiz de traduction (jalon J1).
-///
-/// - Ouvert depuis la barre inférieure : les mots de tous les thèmes
-///   sont utilisés.
-/// - Ouvert depuis le détail d'un thème : seuls les mots du thème
-///   (`QuizScreen(theme: t)`).
+/// Quiz de traduction alimenté par l'API.
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key, this.theme});
 
@@ -33,7 +28,8 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  late List<_Question> _questions;
+  List<_Question> _questions = [];
+  String? _erreur;
   int _index = 0;
   int _score = 0;
   String? _choix;
@@ -41,36 +37,41 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void initState() {
     super.initState();
-    _questions = _construireQuestions();
+    _charger();
   }
 
-  /// Mots disponibles pour ce quiz.
-  List<Mot> _pool() {
-    if (widget.theme != null) return widget.theme!.mots;
-
-    // Sans thème précis : alterner un mot de chaque thème.
-    final pool = <Mot>[];
-    var longueurMax = 0;
-    for (final t in themes) {
-      if (t.mots.length > longueurMax) longueurMax = t.mots.length;
+  /// Récupère les mots puis construit les questions.
+  Future<void> _charger() async {
+    try {
+      final mots = await ApiService.getMots();
+      setState(() {
+        _questions = _construireQuestions(mots);
+        _erreur = null;
+        _index = 0;
+        _score = 0;
+        _choix = null;
+      });
+    } catch (e) {
+      setState(() => _erreur = e.toString());
     }
-    for (var i = 0; i < longueurMax; i++) {
-      for (final t in themes) {
-        if (i < t.mots.length) pool.add(t.mots[i]);
-      }
-    }
-    return pool;
   }
 
-  List<_Question> _construireQuestions() {
-    final pool = _pool();
+  /// Tous les mots, ou seulement ceux du thème choisi.
+  List<Mot> _pool(List<Mot> mots) {
+    if (widget.theme != null) {
+      return mots.where((m) => m.theme == widget.theme!.nom).toList();
+    }
+    return mots;
+  }
+
+  List<_Question> _construireQuestions(List<Mot> mots) {
+    final pool = _pool(mots);
     final selection = pool.take(5).toList();
     final questions = <_Question>[];
 
     for (var i = 0; i < selection.length; i++) {
       final bonne = selection[i].francais;
 
-      // Trois distracteurs pris dans le reste du pool.
       final distracteurs = <String>[];
       for (var j = 1; distracteurs.length < 3 && j < pool.length; j++) {
         final candidat = pool[(i + j) % pool.length].francais;
@@ -91,7 +92,7 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   void _repondre(String option) {
-    if (_choix != null) return; // une réponse par question
+    if (_choix != null) return;
     setState(() {
       _choix = option;
       if (option == _questions[_index].bonneReponse) _score++;
@@ -105,32 +106,52 @@ class _QuizScreenState extends State<QuizScreen> {
     });
   }
 
-  void _recommencer() {
-    setState(() {
-      _questions = _construireQuestions();
-      _index = 0;
-      _score = 0;
-      _choix = null;
-    });
-  }
+  void _recommencer() => _charger();
 
   @override
   Widget build(BuildContext context) {
-    final termine = _index >= _questions.length;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
           widget.theme == null ? 'Quiz' : 'Quiz · ${widget.theme!.nom}',
         ),
       ),
-      body: termine ? _ecranResultat() : _ecranQuestion(),
+      body: _contenu(),
     );
+  }
+
+  Widget _contenu() {
+    if (_erreur != null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Erreur : $_erreur', textAlign: TextAlign.center),
+              const SizedBox(height: 12),
+              FilledButton(
+                onPressed: _recommencer,
+                child: const Text('Réessayer'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (_questions.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    final termine = _index >= _questions.length;
+    return termine ? _ecranResultat() : _ecranQuestion();
   }
 
   Widget _ecranQuestion() {
     final question = _questions[_index];
     final theme = Theme.of(context);
+    final c = theme.colorScheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -179,7 +200,7 @@ class _QuizScreenState extends State<QuizScreen> {
               for (final option in question.options)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
-                  child: _boutonOption(option, question),
+                  child: _boutonOption(option, question, c),
                 ),
               if (_choix != null)
                 FilledButton.icon(
@@ -198,15 +219,15 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 
-  Widget _boutonOption(String option, _Question question) {
+  Widget _boutonOption(String option, _Question question, ColorScheme c) {
     final selectionne = _choix == option;
     final estBonne = option == question.bonneReponse;
 
     Color? fond;
     if (_choix != null && estBonne) {
-      fond = Colors.green.shade100; // la bonne réponse apparaît en vert
+      fond = c.primaryContainer;
     } else if (selectionne && !estBonne) {
-      fond = Colors.red.shade100; // l'erreur de l'utilisateur en rouge
+      fond = c.errorContainer;
     }
 
     return ElevatedButton(
