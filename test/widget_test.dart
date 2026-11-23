@@ -1,19 +1,28 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:darija_quest/main.dart';
+import 'package:darija_quest/services/validation_form.dart';
 
+/// Tests de la validation du formulaire (EF3), sans appel réseau.
 void main() {
-  testWidgets('displays the home screen', (WidgetTester tester) async {
-    await tester.pumpWidget(const DarijaQuestApp());
+  test('un champ vide est refusé', () {
+    expect(
+      champObligatoire('', 'Le mot en darija'),
+      'Le mot en darija est obligatoire',
+    );
+    expect(
+      champObligatoire('   ', 'Le mot en darija'),
+      'Le mot en darija est obligatoire',
+    );
+  });
 
-    expect(find.text('Darija Quest'), findsOneWidget);
-    expect(find.text('Salutations'), findsOneWidget);
+  test('un champ rempli est accepté', () {
+    expect(champObligatoire('Sa7bi', 'Le mot en darija'), isNull);
+  });
+
+  test('seuls les trois niveaux sont acceptés', () {
+    expect(niveauValide('Débutant'), isTrue);
+    expect(niveauValide('Intermédiaire'), isTrue);
+    expect(niveauValide('Avancé'), isTrue);
+    expect(niveauValide('Expert'), isFalse);
   });
 }
