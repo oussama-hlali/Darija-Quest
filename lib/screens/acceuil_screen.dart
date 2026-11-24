@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/mot.dart';
+import '../providers/favoris_provider.dart';
 import '../models/theme_darija.dart';
 import '../services/api_service.dart';
 import 'theme_detail_screen.dart';
@@ -48,6 +50,7 @@ class _AcceuilScreenState extends State<AcceuilScreen> {
   @override
   Widget build(BuildContext context) {
     final c = Theme.of(context).colorScheme;
+    final favoris = context.watch<FavorisProvider>();
 
     return Scaffold(
       appBar: AppBar(
@@ -102,6 +105,9 @@ class _AcceuilScreenState extends State<AcceuilScreen> {
             itemCount: themes.length,
             itemBuilder: (context, i) {
               final t = themes[i];
+              final nbFavoris = favoris.totalPour(
+                t.mots.map((m) => m.id).toList(),
+              );
               return Card(
                 margin: const EdgeInsets.only(bottom: 12),
                 child: ListTile(
@@ -111,7 +117,24 @@ class _AcceuilScreenState extends State<AcceuilScreen> {
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   subtitle: Text('${t.mots.length} mots'),
-                  trailing: const Icon(Icons.chevron_right),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (nbFavoris > 0)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 6),
+                          child: Text(
+                            '$nbFavoris',
+                            style: TextStyle(color: c.primary),
+                          ),
+                        ),
+                      Icon(
+                        nbFavoris > 0 ? Icons.favorite : Icons.favorite_border,
+                        color: c.primary,
+                      ),
+                      const Icon(Icons.chevron_right),
+                    ],
+                  ),
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
