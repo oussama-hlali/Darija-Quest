@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../models/mot.dart';
 import '../models/theme_darija.dart';
-import '../models/theme_darija.dart';
+import '../providers/favoris_provider.dart';
 import 'etude_screen.dart';
 import 'quiz_screen.dart';
-
-import 'package:darija_quest/models/mot.dart';
 
 class ThemeDetailScreen extends StatelessWidget {
   const ThemeDetailScreen({super.key, required this.theme});
@@ -14,6 +14,9 @@ class ThemeDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final favoris = context.watch<FavorisProvider>();
+    final c = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(title: Text(theme.nom)),
       body: ListView(
@@ -40,7 +43,25 @@ class ThemeDetailScreen extends StatelessWidget {
               child: ListTile(
                 title: Text(mot.darija),
                 subtitle: Text('${mot.francais} · ${mot.niveau}'),
-                trailing: Text(mot.arabe, style: const TextStyle(fontSize: 18)),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(mot.arabe, style: const TextStyle(fontSize: 18)),
+                    const SizedBox(width: 4),
+                    IconButton(
+                      onPressed: () => favoris.basculer(mot.id),
+                      tooltip: 'Favori',
+                      icon: Icon(
+                        favoris.estFavori(mot.id)
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: favoris.estFavori(mot.id)
+                            ? c.primary
+                            : c.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           const SizedBox(height: 24),

@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'providers/favoris_provider.dart';
 import 'screens/app_shell.dart';
 
-void main() => runApp(const DarijaQuestApp());
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => FavorisProvider(),
+      child: const DarijaQuestApp(),
+    ),
+  );
+}
 
 class DarijaQuestApp extends StatelessWidget {
   const DarijaQuestApp({super.key});

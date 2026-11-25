@@ -44,3 +44,33 @@ ce stade (exigences du jalon J1).
 **Oussama**  :  https://chatgpt.com/share/6af83adb-d09c-83e9-8777-4cad6bd96023
 
 **Rayen**    : https://chatgpt.com/share/6af86b6d-e968-83ea-91a8-91be13d1b61e
+
+
+## Jalon J2 — données 
+
+L'application utilise maintenant une vraie API au lieu des données fictives.
+
+### API utilisée
+
+- URL : https://darija-quest-api.onrender.com
+- Express + MongoDB Atlas (base `darija-quest`, collection `mots`)
+- Routes : GET /, GET /api/mots, GET /api/mots/:id, GET /api/themes, POST /api/mots, PUT /api/mots/:id, DELETE /api/mots/:id
+
+### Fonctionnalités
+
+- Accueil, quiz et statistiques lus depuis l'API, avec chargement et gestion d'erreurs
+- Formulaire « Ajouter un mot » validé (EF3) avec retour vers l'accueil (EF4)
+- Favoris partagés entre l'accueil et le détail avec Provider (EF5)
+
+### Répartition du travail (J2)
+
+| Membre | Travail |
+|---|---|
+| Oussama | API Express, MongoDB, déploiement Render, package http, service API, modèle JSON |
+| Rayen | écrans API, validation, formulaire, tests, Provider des favoris |
+
+### Journals IA(J2)
+
+**Oussama**  : https://chatgpt.com/share/6b057418-5c34-83e8-910f-d9b52379d8ed
+
+**Rayen**    : https://chatgpt.com/share/6b06e32a-cfcc-83e9-a902-11f266c47ed0
