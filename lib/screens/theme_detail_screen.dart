@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../models/mot.dart';
 import '../models/theme_darija.dart';
-import '../providers/favoris_provider.dart';
+import '../widgets/bouton_favori.dart';
 import 'etude_screen.dart';
 import 'quiz_screen.dart';
 
@@ -14,7 +13,6 @@ class ThemeDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final favoris = context.watch<FavorisProvider>();
     final c = Theme.of(context).colorScheme;
 
     return Scaffold(
@@ -22,19 +20,18 @@ class ThemeDetailScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Row(
-            children: [
-              Icon(
-                theme.icone,
-                size: 32,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                '${theme.mots.length} mots',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ],
+          Hero(
+            tag: 'theme-${theme.nom}',
+            child: Row(
+              children: [
+                Icon(theme.icone, size: 32, color: c.primary),
+                const SizedBox(width: 12),
+                Text(
+                  '${theme.mots.length} mots',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 16),
           for (final Mot mot in theme.mots)
@@ -48,18 +45,7 @@ class ThemeDetailScreen extends StatelessWidget {
                   children: [
                     Text(mot.arabe, style: const TextStyle(fontSize: 18)),
                     const SizedBox(width: 4),
-                    IconButton(
-                      onPressed: () => favoris.basculer(mot.id),
-                      tooltip: 'Favori',
-                      icon: Icon(
-                        favoris.estFavori(mot.id)
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        color: favoris.estFavori(mot.id)
-                            ? c.primary
-                            : c.onSurfaceVariant,
-                      ),
-                    ),
+                    BoutonFavori(id: mot.id),
                   ],
                 ),
               ),

@@ -29,10 +29,18 @@ class ApiService {
   // Le plan gratuit Render s'endort : la 1re requête peut prendre ~30 s.
   static const Duration _delai = Duration(seconds: 60);
 
-  static Future<List<Mot>> getMots() async {
-    final reponse = await http
-        .get(Uri.parse('$baseUrl/api/mots'))
-        .timeout(_delai);
+  /// Liste des mots, avec recherche et filtre par niveau (EF8).
+  static Future<List<Mot>> getMots({
+    String recherche = '',
+    String? niveau,
+  }) async {
+    final uri = Uri.parse('$baseUrl/api/mots').replace(
+      queryParameters: {
+        if (recherche.trim().isNotEmpty) 'recherche': recherche.trim(),
+        if (niveau != null && niveau.isNotEmpty) 'niveau': niveau,
+      },
+    );
+    final reponse = await http.get(uri).timeout(_delai);
 
     if (reponse.statusCode != 200) {
       throw Exception('Chargement impossible (${reponse.statusCode})');

@@ -58,7 +58,9 @@ class _EtudeScreenState extends State<EtudeScreen> {
                       padding: const EdgeInsets.all(20),
                       child: AnimatedSwitcher(
                         duration: const Duration(milliseconds: 200),
-                        child: visible ? _verso(context, mot) : _recto(mot),
+                        child: visible
+                            ? _verso(context, mot)
+                            : _recto(context, mot),
                       ),
                     ),
                   ),
@@ -72,7 +74,8 @@ class _EtudeScreenState extends State<EtudeScreen> {
   }
 
   /// Face de la carte : le mot en darija et en arabe.
-  Widget _recto(Mot mot) {
+  Widget _recto(BuildContext context, Mot mot) {
+    final secondaire = Theme.of(context).colorScheme.onSurfaceVariant;
     return Column(
       key: const ValueKey('recto'),
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +86,7 @@ class _EtudeScreenState extends State<EtudeScreen> {
         const SizedBox(height: 12),
         Text(
           'Touchez la carte pour voir la traduction',
-          style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+          style: TextStyle(fontSize: 12, color: secondaire),
         ),
       ],
     );
@@ -92,6 +95,7 @@ class _EtudeScreenState extends State<EtudeScreen> {
   /// Dos de la carte : traduction et exemples.
   Widget _verso(BuildContext context, Mot mot) {
     final theme = Theme.of(context);
+    final secondaire = theme.colorScheme.onSurfaceVariant;
     return Column(
       key: const ValueKey('verso'),
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,14 +106,11 @@ class _EtudeScreenState extends State<EtudeScreen> {
         const Divider(height: 24),
         Text(mot.exemple, style: const TextStyle(fontSize: 16)),
         const SizedBox(height: 4),
-        Text(
-          mot.exemplefr,
-          style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
-        ),
+        Text(mot.exemplefr, style: TextStyle(fontSize: 14, color: secondaire)),
         const SizedBox(height: 12),
         Text(
           'Touchez la carte pour revenir au mot',
-          style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+          style: TextStyle(fontSize: 12, color: secondaire),
         ),
       ],
     );
