@@ -38,6 +38,7 @@ dependencies:
 
   # État partagé des favoris (EF5).
   provider: ^6.1.2
+  shared_preferences: ^2.3.3
 
 
 dev_dependencies:
