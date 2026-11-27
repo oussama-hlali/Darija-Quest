@@ -103,4 +103,4 @@ APK : http://github.com/oussama-hlali/Darija-Quest/releases/tag/v1.0.0
 
 **Oussama** : https://chatgpt.com/share/6b099a5a-1784-83e9-93a9-be27fbe16e83
 
-**Rayen** : https://chatgpt.com/share/6b06e32a-cfcc-83e9-a902-11f266c47ed0
+**Rayen** :https://chatgpt.com/share/6b06e32a-cfcc-83e9-a902-11f266c47ed0
