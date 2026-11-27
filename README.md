@@ -74,3 +74,33 @@ L'application utilise maintenant une vraie API au lieu des données fictives.
 **Oussama**  : https://chatgpt.com/share/6b057418-5c34-83e8-910f-d9b52379d8ed
 
 **Rayen**    : https://chatgpt.com/share/6b06e32a-cfcc-83e9-a902-11f266c47ed0
+
+
+## Jalon J3 — finitions (terminé)
+
+Ce jalon ajoute la persistance, la recherche et les derniers points de qualité.
+
+### Nouveautés
+
+- **EF7** : les favoris sont sauvegardés avec `shared_preferences` et retrouvés au redémarrage.
+- **EF8** : recherche par mot (`?recherche=`) et filtre par niveau (`?niveau=`) côté API et côté accueil.
+- **ENF2 / ENF4** : couleurs remplacées par le thème et bouton cœur factorisé dans `lib/widgets/`.
+- **Bonus J0** : mode sombre persisté, animation Hero de la carte vers le détail, 3 tests de widgets.
+- **ENF7** : APK release publié sur GitHub.
+
+### Répartition du travail (J3)
+
+| Membre | Travail |
+|---|---|
+| **Oussama** | recherche et filtres dans `GET /api/mots`, déploiement Render, APK, Hero, widget cœur, README et journals IA |
+| **Rayen** | `shared_preferences`, écran de recherche, mode sombre, 3 tests de widgets, correctifs de thème |
+
+### Téléchargement
+
+APK : http://github.com/oussama-hlali/Darija-Quest/releases/tag/v1.0.0
+
+### Journals IA (J3)
+
+**Oussama** : https://chatgpt.com/share/6b099a5a-1784-83e9-93a9-be27fbe16e83
+
+**Rayen** : https://chatgpt.com/share/6b06e32a-cfcc-83e9-a902-11f266c47ed0
